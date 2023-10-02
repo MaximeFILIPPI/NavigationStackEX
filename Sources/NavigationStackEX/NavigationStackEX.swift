@@ -114,7 +114,7 @@ public class Navigator: ObservableObject {
 
 
 extension View {
-    var nav: AnyView {
+    var any: AnyView {
         return AnyView(self)
     }
 }
