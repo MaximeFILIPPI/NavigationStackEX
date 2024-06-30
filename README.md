@@ -426,7 +426,7 @@ struct TempScreenView: View {
 
 ---------------------------------------------
 
-**NO TITLE**
+**HIDDEN TITLE**
 
 or not displayed at all and hide the navigation bar: 
         
