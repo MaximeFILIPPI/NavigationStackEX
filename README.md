@@ -26,7 +26,7 @@ Push, present, and pop your views elegantly, helping you reduce time, complexity
 
 ✅ Powerful solution for your Navigation
 
-✅ Can predefine the loading of your views in the app ahead of use in a more classical way
+✅ Can predefine the loading of your views in the app, ahead of use, in a more conventional way
 
 ✅ Can dynamically push / present your Views in a SwiftUI style, more modern way
 
@@ -121,7 +121,7 @@ struct ContentView: View {
         
             Button("Go to Profile") {
             
-            navigator.push(to: ProfileView()) // <- Push your view directly (or you can use a tag like "profile" that was predefine in the setupNavigation() function)
+                navigator.push(to: ProfileView()) // <- Push your view directly (or you can use a tag like "profile" that was predefine in the setupNavigation() function)
             
             }
             
@@ -302,8 +302,8 @@ struct TempScreenView: View {
         ZStack {
             Color.red
         }
-        .navigationLeftViewItem(CustomBackButtonView()) // <- Right navigation bar button
-        .navigationRightViewItem(CustomLogoView()) // <- Left navigation bar button
+        .navigationLeftViewItem(YourOwnCustomBackButtonView()) // <- Right navigation bar button (your own custom view)
+        .navigationRightViewItem(YourOwnCustomLogoView()) // <- Left navigation bar button (your own custom view)
     }
 }
 ```
