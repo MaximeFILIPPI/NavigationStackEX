@@ -30,7 +30,7 @@ public struct NavigationStackEX<Content: View>: View {
                 .sheet(item: $navigator.sheet) { destination in
                     if let view = destinations[destination] {
                         view
-                    } else if let dynamicView = navigator.dynamicDestinations[destination] {
+                    } else if let dynamicView = navigator.dynamicSheets[destination] {
                         dynamicView
                     }
                 }
@@ -54,6 +54,9 @@ public class Navigator: ObservableObject {
     @Published public var dataForDestinations: [String: Any] = [:] // Store data for destinations
 
     @Published public var dynamicDestinations: [String: AnyView] = [:] // Store dynamically created views
+    
+    @Published public var dynamicSheets: [String: AnyView] = [:] // Store dynamically created views for sheets
+
 
     public init() {}
     
@@ -61,9 +64,7 @@ public class Navigator: ObservableObject {
         if !ProcessInfo().isPreview {
             path.append(destination)
             dataForDestinations[destination] = data
-        }
-        else
-        {
+        } else {
             print(TAG, "push() -> cannot be used in Preview")
         }
     }
@@ -73,9 +74,7 @@ public class Navigator: ObservableObject {
             let viewIdentifier = "\(identifier ?? "dynamic_\(dynamicDestinations.count)")"
             dynamicDestinations[viewIdentifier] = view.any
             path.append(viewIdentifier)
-        }
-        else
-        {
+        } else {
             print(TAG, "push() -> cannot be used in Preview")
         }
     }
@@ -84,9 +83,17 @@ public class Navigator: ObservableObject {
         if !ProcessInfo().isPreview {
             sheet = destination
             dataForDestinations[destination] = data
+        } else {
+            print(TAG, "present() -> cannot be used in Preview")
         }
-        else
-        {
+    }
+    
+    public func present<V: View>(_ view: V, identifier: String? = nil) {
+        if !ProcessInfo().isPreview {
+            let viewIdentifier = "\(identifier ?? "dynamicSheet_\(dynamicSheets.count)")"
+            dynamicSheets[viewIdentifier] = view.any
+            sheet = viewIdentifier
+        } else {
             print(TAG, "present() -> cannot be used in Preview")
         }
     }
@@ -106,9 +113,7 @@ public class Navigator: ObservableObject {
             } else {
                 path.removeLast()
             }
-        }
-        else
-        {
+        } else {
             print(TAG, "pop() -> cannot be used in Preview")
         }
     }
@@ -116,9 +121,7 @@ public class Navigator: ObservableObject {
     public func popToRoot() {
         if !ProcessInfo().isPreview {
             path.removeAll()
-        }
-        else
-        {
+        } else {
             print(TAG, "popToRoot() -> cannot be used in Preview")
         }
     }
@@ -128,9 +131,7 @@ public class Navigator: ObservableObject {
             if sheet != nil {
                 sheet = nil
             }
-        }
-        else
-        {
+        } else {
             print(TAG, "dismiss() -> cannot be used in Preview")
         }
     }
