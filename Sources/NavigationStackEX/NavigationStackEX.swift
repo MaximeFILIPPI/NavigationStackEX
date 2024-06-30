@@ -11,11 +11,11 @@ public struct NavigationStackEX<Content: View>: View {
     
     private let TAG: String = "NavigationStackEX ::"
     
-    @StateObject var navigator: Navigator = Navigator()
+    @StateObject public var navigator: Navigator = Navigator()
     
-    @Binding var destinations: [String: AnyView]
+    @Binding public var destinations: [String: AnyView]
 
-    let content: () -> Content
+    public let content: () -> Content
 
     public var body: some View {
         NavigationStack(path: $navigator.path) {
@@ -169,17 +169,17 @@ public class Navigator: ObservableObject {
     }
 }
 
-struct NavigationStackEx_Notif {
-    static let DISMISS: String = "path.removeLast()"
+public struct NavigationStackEx_Notif {
+    public static let DISMISS: String = "path.removeLast()"
 }
 
-struct CustomNavigationBackButtonModifier<CustomBackView: View>: ViewModifier {
+public struct CustomNavigationBackButtonModifier<CustomBackView: View>: ViewModifier {
     
     @Environment(\.presentationMode) private var presentationMode: Binding<PresentationMode>
     
     let backButtonView: CustomBackView
     
-    func body(content: Content) -> some View {
+    public func body(content: Content) -> some View {
         content
             .navigationBarBackButtonHidden(true)
             .toolbar {
@@ -206,13 +206,13 @@ struct CustomNavigationBackButtonModifier<CustomBackView: View>: ViewModifier {
 
 
 
-struct CustomNavigationLeftItemModifier<CustomLeftView: View>: ViewModifier {
+public struct CustomNavigationLeftItemModifier<CustomLeftView: View>: ViewModifier {
     
     @Environment(\.presentationMode) private var presentationMode: Binding<PresentationMode>
     
     let leftCustomView: CustomLeftView
     
-    func body(content: Content) -> some View {
+    public func body(content: Content) -> some View {
         content
             .navigationBarBackButtonHidden(true)
             .toolbar {
@@ -230,13 +230,13 @@ struct CustomNavigationLeftItemModifier<CustomLeftView: View>: ViewModifier {
 
 
 
-struct CustomNavigationRightItemModifier<CustomRightView: View>: ViewModifier {
+public struct CustomNavigationRightItemModifier<CustomRightView: View>: ViewModifier {
     
     @Environment(\.presentationMode) private var presentationMode: Binding<PresentationMode>
     
-    let rightCustomView: CustomRightView
+    public let rightCustomView: CustomRightView
     
-    func body(content: Content) -> some View {
+    public func body(content: Content) -> some View {
         content
             .toolbar {
                 
@@ -251,14 +251,14 @@ struct CustomNavigationRightItemModifier<CustomRightView: View>: ViewModifier {
     }
 }
 
-extension ProcessInfo
+public extension ProcessInfo
 {
     var isPreview: Bool {
         return ProcessInfo.processInfo.environment["XCODE_RUNNING_FOR_PREVIEWS"] == "1"
     }
 }
 
-extension View {
+public extension View {
     
     var any: AnyView {
         return AnyView(self)
