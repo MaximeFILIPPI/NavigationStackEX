@@ -259,14 +259,65 @@ navigator.presentFullScreen("profile")
 
 ## Passing Data 
 
-How to pass data in the classical way: 
-
-/ Show Implemetation of passing and retrieve data in the classical way: *TO BE COMPLETED */
-
 
 How to pass data in the modern way: 
 
-/ Show Implemetation of passing in the modern way: *TO BE COMPLETED */
+```swift
+
+// Set data using a view instance
+navigator.push(to: ProfileView(name: "Max"))
+
+// Example of Profile View
+struct ProfileView: View {
+
+    @State var name: String = ""
+    
+    ...
+}
+
+```
+
+
+How to pass data in the classical way: 
+
+
+```swift
+
+// Set data using a destination (tag reference)
+let data: String = "Max" // <- Can be any type of data, primivite, objects, etc...
+navigator.push(to: "profile", with: data)
+
+
+// Example for Profile View
+struct ProfileView: View {
+
+    @State var name: String = ""
+    
+    var body: some View {
+    
+        ZStack {
+        
+            Text(name) 
+            
+        }
+        .onAppear {
+            loadInfos()
+        }
+        
+    }
+    
+    
+    func loadInfos()
+    {
+        if let profileData = navigator.data(for: "profile") as? String
+        {
+            name = profileData
+        }
+    }
+}
+
+```
+
 
 
 
@@ -346,15 +397,6 @@ struct TempScreenView: View {
     }
 }
 ```
-
-
-
-## Examples
-
-Please refer to the directory [EXAMPLES](https://github.com/MaximeFILIPPI/NavigationStackEX/tree/main/Examples) for fully detailed code on how to achieve certain effects.
-
-
-/ Show a complete example: *TO BE COMPLETED */
 
 
 
