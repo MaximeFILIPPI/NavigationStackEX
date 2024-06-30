@@ -104,7 +104,8 @@ struct YourProject: App {
 
 ## Basic Usage
 
-To navigate between your views, simply add `@EnvironmentObject var navigator: Navigator` to them, then use the `navigator` functions as `push`, `present`, `presentFullScreen`, `pop`, `popToRoot`, `dismiss` to trigger the navigation:
+To navigate between your views, simply add `@EnvironmentObject var navigator: Navigator`
+Then use the `navigator` functions as `push`, `present`, `presentFullScreen`, `pop`, `popToRoot`, `dismiss` to trigger the navigation:
 
 ```swift
 import SwiftUI
@@ -149,15 +150,17 @@ navigator.push(to: ProfileView())
 ```
 
 
+
 Navigate to next screen (Classic style)
 
 ```swift
 
-// Navigate to a destination 
+// Navigate to a destination from a tag
 navigator.push(to: "profile")
 
 
 ```
+
 
 
 **POP**
@@ -173,20 +176,24 @@ navigator.pop()
 ```
 
 
-Back to the root of your navigation (very first screen)
+
+Back to the root of your navigation
 
 ```swift
 
-// Back to the previous SwiftUI view
+// Back to the very first SwiftUI view
 navigator.popToRoot()
 
 
 ```
 
 
-Back to a specific screen 
-You must use the classical way OR add the "identifier" parameter behind your view instance when using `push`
-(example: `navigator.push(to: ProfileView(), identifier: "profile"))`)
+
+Back to a specific screen in the stack
+
+> **Note:**
+> You must use the classical way OR add the "identifier" parameter behind your view instance when using `push`
+> (example: `navigator.push(to: ProfileView(), identifier: "profile"))`)
 
 ```swift
 
@@ -198,9 +205,10 @@ navigator.pop(to: "profile") // <- will take you back to the profile view of you
 
 
 
+
 **PRESENT**
 
-> **Note**
+> **Note:**
 > Be careful the present modal way of displaying views is not stackable at the moment.
 
 
@@ -270,7 +278,7 @@ You can change the back button of the navigation bar if you wish:
 import SwiftUI
 import NavigationStackEX
 
-struct SecondScreenView: View {
+struct TempScreenView: View {
     
     var body: some View {
         ZStack {
@@ -288,7 +296,7 @@ or the left / right navigation bar items :
 import SwiftUI
 import NavigationStackEX
 
-struct SecondScreenView: View {
+struct TempScreenView: View {
     
     var body: some View {
         ZStack {
@@ -307,7 +315,7 @@ Change the way the title is diplayed (Large or Inline)
 import SwiftUI
 import NavigationStackEX
 
-struct SecondScreenView: View {
+struct TempScreenView: View {
     
     var body: some View {
         ZStack {
@@ -327,7 +335,7 @@ or not displayed at all and hide the navigation bar:
 import SwiftUI
 import NavigationStackEX
 
-struct SecondScreenView: View {
+struct TempScreenView: View {
     
     var body: some View {
         ZStack {
