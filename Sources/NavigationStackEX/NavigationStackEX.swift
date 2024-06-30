@@ -14,6 +14,12 @@ public struct NavigationStackEX<Content: View>: View {
     @Binding public var destinations: [String: AnyView]
 
     public let content: () -> Content
+    
+    public init(destinations: Binding<[String: AnyView]>, content: @escaping () -> Content) 
+    {
+        self._destinations = destinations
+        self.content = content
+    }
 
     public var body: some View {
         NavigationStack(path: $navigator.path) {
