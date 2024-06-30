@@ -360,6 +360,8 @@ struct ProfileView: View {
 
 ## Customization
 
+**BACK BUTTON**
+
 You can change the back button of the navigation bar if you wish:
 
 ```swift
@@ -378,6 +380,8 @@ struct TempScreenView: View {
 ```
 
 ---------------------------------------------
+
+**RIGHT ITEM / LEFT ITEM**
 
 or the left / right navigation bar items :
 
@@ -399,6 +403,8 @@ struct TempScreenView: View {
 
 ---------------------------------------------
 
+**LARGE TITLE**
+
 Change the way the title is diplayed (Large or Inline)
 
 ```swift
@@ -419,6 +425,8 @@ struct TempScreenView: View {
 ```
 
 ---------------------------------------------
+
+**NO TITLE**
 
 or not displayed at all and hide the navigation bar: 
         
