@@ -65,16 +65,16 @@ import SwiftUI
 import NavigationStackEX // <- Import
     
 @main
-struct NameOfYourProject: App {
+struct YourProject: App {
     
-    @State var segues: [String: AnyView] = [:] // <- Add this line to prepare destinations routes
+    @State var segues: [String: AnyView] = [:] // <- Add this line to prepare destinations
     
     var body: some Scene {
     
         WindowGroup {
         
-            NavigationStackEX(destinations: $segues) { // <- The Navigation with the destinations in binding
-                ContentView()
+            NavigationStackEX(destinations: $segues) { // <- The NavigationEX
+                ContentView() // <- Your root view (first view)
             }
             .onAppear {
                 self.setupNavigation()
@@ -83,10 +83,12 @@ struct NameOfYourProject: App {
     }
     
     
+    
     // OPTIONAL
     // You can setup the destinations ahead of time 
     // By predefining your views with associated tags
-    // if you wish to navigate in a more classical way by referencing tags instead of views instance (UIKit style) 
+    // It allows you to navigate in a more classical way by referencing tags instead of views instance
+    
     func setupNavigation()
     {
         // Example for a profile view in your app
