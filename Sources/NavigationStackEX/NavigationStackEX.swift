@@ -65,7 +65,7 @@ public class Navigator: ObservableObject {
     
     public func push<V: View>(to view: V, identifier: String? = nil) {
         if !ProcessInfo().isPreview {
-            let viewIdentifier = "dynamic_\(identifier ?? "\(dynamicDestinations.count)")"
+            let viewIdentifier = "\(identifier ?? "dynamic_\(dynamicDestinations.count)")"
             dynamicDestinations[viewIdentifier] = view.any
             path.append(viewIdentifier)
         }
