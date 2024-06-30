@@ -34,6 +34,13 @@ public struct NavigationStackEX<Content: View>: View {
                         dynamicView
                     }
                 }
+                .fullScreenCover(item: $navigator.cover) { destination in
+                    if let view = destinations[destination] {
+                        view
+                    } else if let dynamicView = navigator.dynamicCovers[destination] {
+                        dynamicView
+                    }
+                }
         }
         .environmentObject(navigator)
     }
@@ -51,12 +58,15 @@ public class Navigator: ObservableObject {
     
     @Published public var sheet: String?
     
+    @Published public var cover: String?
+    
     @Published public var dataForDestinations: [String: Any] = [:] // Store data for destinations
 
     @Published public var dynamicDestinations: [String: AnyView] = [:] // Store dynamically created views
     
     @Published public var dynamicSheets: [String: AnyView] = [:] // Store dynamically created views for sheets
-
+    
+    @Published public var dynamicCovers: [String: AnyView] = [:] // Store dynamically created full screen covers
 
     public init() {}
     
@@ -97,6 +107,25 @@ public class Navigator: ObservableObject {
             print(TAG, "present() -> cannot be used in Preview")
         }
     }
+    
+    public func presentFullScreen(_ destination: String, with data: Any? = nil) {
+        if !ProcessInfo().isPreview {
+            cover = destination
+            dataForDestinations[destination] = data
+        } else {
+            print(TAG, "presentFullScreen() -> cannot be used in Preview")
+        }
+    }
+    
+    public func presentFullScreen<V: View>(_ view: V, identifier: String? = nil) {
+        if !ProcessInfo().isPreview {
+            let viewIdentifier = "\(identifier ?? "dynamicCover_\(dynamicCovers.count)")"
+            dynamicCovers[viewIdentifier] = view.any
+            cover = viewIdentifier
+        } else {
+            print(TAG, "presentFullScreen() -> cannot be used in Preview")
+        }
+    }
 
     public func data(for destination: String) -> Any? {
         return dataForDestinations[destination]
@@ -130,6 +159,9 @@ public class Navigator: ObservableObject {
         if !ProcessInfo().isPreview {
             if sheet != nil {
                 sheet = nil
+            }
+            if cover != nil {
+                cover = nil
             }
         } else {
             print(TAG, "dismiss() -> cannot be used in Preview")
