@@ -67,13 +67,13 @@ import NavigationStackEX // <- Import
 @main
 struct NameOfYourProject: App {
     
-    @State var destinations: [String: AnyView] = [:]
+    @State var segues: [String: AnyView] = [:] // <- Add this line to prepare destinations routes
     
     var body: some Scene {
     
         WindowGroup {
         
-            NavigationStackEX(destinations: $destinations) {
+            NavigationStackEX(destinations: $segues) { // <- The Navigation with the destinations in binding
                 ContentView()
             }
             .onAppear {
@@ -83,69 +83,167 @@ struct NameOfYourProject: App {
     }
     
     
-    // Setup the destinations in a classical way (optional)
+    // OPTIONAL
+    // You can setup the destinations ahead of time 
+    // By predefining your views with associated tags
+    // if you wish to navigate in a more classical way by referencing tags instead of views instance (UIKit style) 
     func setupNavigation()
     {
-        self.destinations["TagOfYourScreen"] = FirstScreenView().any  // <- add .any modifier behind your view
-        self.destinations["TagOfYourSecondScreen"] = SecondScreenView().any
-        // Add more destinations as needed
+        // Example for a profile view in your app
+        self.segues["profile"] = ProfileView().any // <- add .any modifier behind your view
+        
+        // Add more segues as needed
     }
 }
 ```
 
-/ EXEMPLANATION: *TO BE COMPLETED* /
 
 
 
 ## Basic Usage
 
-To integrate NavigationStackEX into your views:
+To navigate between your views, simply add `@EnvironmentObject var navigator: Navigator` to them, then use the `navigator` functions as `push`, `present`, `presentFullScreen`, `pop`, `popToRoot`, `dismiss` to trigger the navigation:
 
 ```swift
 import SwiftUI
 import NavigationStackEX
 
 struct ContentView: View {
-    @EnvironmentObject var navigator: Navigator
+
+    @EnvironmentObject var navigator: Navigator  // <- Add this line
     
     var body: some View {
+    
         VStack {
+        
             Button("Go to Profile") {
-                navigator.push(to: "profile")
+            
+            navigator.push(to: ProfileView()) // <- Push your view directly (or you can use a tag like "profile" that was predefine in the setupNavigation() function)
+            
             }
+            
         }
-        .navigationBackButtonItem(Text("Back")) // Customize back button if needed
+        
     }
+    
 }
 ```
+
 
 
 ## Detailed Usage
 
-```swift
-// Function to navigate to the next screen view (classical way)
-func goToFirstScreenView()
-{
-    navigator.push(to: "TagOfYourScreen")
-}
-```
 
-or if you prefer in a more modern way (SwiftUI Style)
+**PUSH**
+
+Navigate to next screen (Modern style)
 
 ```swift
-// Function to navigate to the next screen view (modern way)
-func goToFirstScreenView()
-{
-    navigator.push(to: FirstScreenView())
-}
+
+// Navigate to a SwiftUI view instance
+navigator.push(to: ProfileView())
+
+
 ```
 
-/ Show pop - pop(to:) - popToRoot: *TO BE COMPLETED */
 
-/ Show Implemetation of present and fullscreen: *TO BE COMPLETED */
+Navigate to next screen (Classic style)
+
+```swift
+
+// Navigate to a destination 
+navigator.push(to: "profile")
+
+
+```
+
+
+**POP**
+
+Back to previous screen
+
+```swift
+
+// Back to the previous SwiftUI view
+navigator.pop()
+
+
+```
+
+
+Back to the root of your navigation (very first screen)
+
+```swift
+
+// Back to the previous SwiftUI view
+navigator.popToRoot()
+
+
+```
+
+
+Back to a specific screen 
+You must use the classical way OR add the "identifier" parameter behind your view instance when using `push`
+(example: `navigator.push(to: ProfileView(), identifier: "profile"))`)
+
+```swift
+
+// Back to a specified SwiftUI view
+navigator.pop(to: "profile") // <- will take you back to the profile view of your app, wherever it is in your navigation stack
+
+
+```
+
+
+
+**PRESENT**
 
 > **Note**
-> Be careful the modal display of view are not stackable for the moment.
+> Be careful the present modal way of displaying views is not stackable at the moment.
+
+
+Modal opening screen (Modern style)
+
+```swift
+
+// Navigate to a SwiftUI view instance
+navigator.present(ProfileView())
+
+
+```
+
+
+Modal opening screen (Classic style)
+
+```swift
+
+// Navigate to a destination 
+navigator.present("profile")
+
+
+```
+
+Cover opening full screen  (Modern style)
+
+```swift
+
+// Navigate to a SwiftUI view instance
+navigator.presentFullScreen(ProfileView())
+
+
+```
+
+
+Modal opening screen (Classic style)
+
+```swift
+
+// Navigate to a destination 
+navigator.presentFullScreen("profile")
+
+
+```
+
 
 
 
@@ -164,7 +262,7 @@ How to pass data in the modern way:
 
 ## Customization
 
-You can change the back button if you wish:
+You can change the back button of the navigation bar if you wish:
 
 ```swift
 import SwiftUI
@@ -182,7 +280,7 @@ struct SecondScreenView: View {
 ```
 
 
-or the left / right navigation bar buttons:
+or the left / right navigation bar items :
 
 ```swift
 import SwiftUI
@@ -201,8 +299,7 @@ struct SecondScreenView: View {
 ```
 
 
-Change the way the title is diplayed (Large or Inline) or not displayed at all 
-(it works the same way as the classical NavigationStack)
+Change the way the title is diplayed (Large or Inline)
 
 ```swift
 import SwiftUI
@@ -222,8 +319,7 @@ struct SecondScreenView: View {
 ```
 
 
-Hide the navigation bar: 
-        
+or not displayed at all and hide the navigation bar: 
         
 ```swift
 import SwiftUI
@@ -240,6 +336,7 @@ struct SecondScreenView: View {
     }
 }
 ```
+
 
 
 ## Examples
