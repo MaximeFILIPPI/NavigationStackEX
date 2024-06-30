@@ -56,6 +56,8 @@ https://github.com/MaximeFILIPPI/NavigationStackEX
 Follow the prompts to complete the installation.
 
 
+---------------------------------------------
+
 ## Setup
 
 Here is an example of how to integrate and use NavigationStackEX in your SwiftUI views:
@@ -100,6 +102,7 @@ struct YourProject: App {
 ```
 
 
+---------------------------------------------
 
 
 ## Basic Usage
@@ -132,6 +135,7 @@ struct ContentView: View {
 }
 ```
 
+---------------------------------------------
 
 
 ## Detailed Usage
@@ -162,6 +166,7 @@ navigator.push(to: "profile")
 ```
 
 
+---------------------------------------------
 
 **POP**
 
@@ -204,6 +209,7 @@ navigator.pop(to: "profile") // <- will take you back to the profile view of you
 ```
 
 
+---------------------------------------------
 
 
 **PRESENT**
@@ -233,6 +239,11 @@ navigator.present("profile")
 
 ```
 
+---------------------------------------------
+
+
+**PRESENT FULL SCREEN**
+
 Cover opening full screen  (Modern style)
 
 ```swift
@@ -244,7 +255,7 @@ navigator.presentFullScreen(ProfileView())
 ```
 
 
-Modal opening screen (Classic style)
+Cover opening screen (Classic style)
 
 ```swift
 
@@ -255,6 +266,23 @@ navigator.presentFullScreen("profile")
 ```
 
 
+---------------------------------------------
+
+
+**DISMISS**
+
+Close a modal that has been `present` or `presentFullScreen`:
+
+```swift
+
+// Navigate to a destination 
+navigator.dismiss()
+
+
+```
+
+
+---------------------------------------------
 
 
 ## Passing Data 
@@ -282,11 +310,14 @@ navigator.push(to: "profile", with: data)
 
 ```
 
+---------------------------------------------
+
 Get the data:
+
 
 ```swift
 
-let data = navigator.data(for: "profile") as? String // <- Can be any type of data, primivite, objects, etc...
+navigator.data(for: "profile") as? String // <- Can be any type of data, primivite, objects, etc...
 
 ```
 
@@ -324,6 +355,7 @@ struct ProfileView: View {
 ```
 
 
+---------------------------------------------
 
 
 ## Customization
@@ -345,6 +377,7 @@ struct TempScreenView: View {
 }
 ```
 
+---------------------------------------------
 
 or the left / right navigation bar items :
 
@@ -364,6 +397,7 @@ struct TempScreenView: View {
 }
 ```
 
+---------------------------------------------
 
 Change the way the title is diplayed (Large or Inline)
 
@@ -384,6 +418,7 @@ struct TempScreenView: View {
 }
 ```
 
+---------------------------------------------
 
 or not displayed at all and hide the navigation bar: 
         
@@ -404,11 +439,13 @@ struct TempScreenView: View {
 ```
 
 
+---------------------------------------------
 
 ## License
 
 SnapPager is available under the MIT license. See the [LICENSE](https://github.com/MaximeFILIPPI/NavigationStackEX/blob/main/LICENSE) file for more details.
 
+---------------------------------------------
 
 ## Credits
 
