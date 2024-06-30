@@ -5,16 +5,15 @@
 //  Created by MaxBook Pro on 1/10/23.
 //
 
-import Foundation
 import SwiftUI
 
-public struct NavigationStackEX<Content: View, V: View>: View {
+public struct NavigationStackEX<Content: View>: View {
     
     private let TAG: String = "NavigationStackEX ::"
     
     @StateObject var navigator: Navigator = Navigator()
     
-    @Binding var destinations: [String: V]
+    @Binding var destinations: [String: AnyView]
 
     let content: () -> Content
 
@@ -253,4 +252,3 @@ extension String: Identifiable {
         self
     }
 }
-
