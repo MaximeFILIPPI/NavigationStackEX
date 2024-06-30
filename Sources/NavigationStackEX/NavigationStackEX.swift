@@ -8,47 +8,34 @@
 import Foundation
 import SwiftUI
 
-
 public struct NavigationStackEX<Content: View, V: View>: View {
     
     @StateObject var navigator: Navigator = Navigator()
     
     @Binding var destinations: [String: V]
-    //@Binding var destinationsLazy: [String: () -> V]
 
     let content: () -> Content
 
     public var body: some View {
-        
         NavigationStack(path: $navigator.path) {
             content()
                 .navigationDestination(for: String.self) { destination in
-                    
-                    //let _ = print("NavigationStackEX :: navigation destination view -> \(destination)")
-                    
-                    if let view = destinations[destination]
-                    {
-                        //view()
+                    if let view = destinations[destination] {
                         view
+                    } else if let dynamicView = navigator.dynamicDestinations[destination] {
+                        dynamicView
                     }
-                    
                 }
                 .sheet(item: $navigator.sheet) { destination in
-                    
-                    //let _ = print("NavigationStackEX :: sheet destination view -> \(destination)")
-                    
-                    if let view = destinations[destination]
-                    {
-                        //view()
+                    if let view = destinations[destination] {
                         view
+                    } else if let dynamicView = navigator.dynamicDestinations[destination] {
+                        dynamicView
                     }
-                    
                 }
-            
         }
         .environmentObject(navigator)
     }
-    
 }
 
 
@@ -63,107 +50,76 @@ public class Navigator: ObservableObject {
     
     @Published public var dataForDestinations: [String: Any] = [:] // Store data for destinations
 
+    @Published public var dynamicDestinations: [String: AnyView] = [:] // Store dynamically created views
+
     public init() {}
     
+    
     public func push(to destination: String, with data: Any? = nil) {
-        
-        // Check if not Preview
-        if !ProcessInfo().isPreview
-        {
-            // Start pushing to the new View
+        if !ProcessInfo().isPreview {
             path.append(destination)
-            dataForDestinations[destination] = data // Store data for the destination
+            dataForDestinations[destination] = data
         }
-        
     }
     
+    
+    public func push<V: View>(to view: V, identifier: String? = nil) {
+        if !ProcessInfo().isPreview {
+            let viewIdentifier = "dynamic_\(identifier ?? "\(dynamicDestinations.count)")"
+            dynamicDestinations[viewIdentifier] = view.any
+            path.append(viewIdentifier)
+        }
+    }
+    
+    
     public func present(_ destination: String, with data: Any? = nil) {
-        
-        // Check if not Preview
-        if !ProcessInfo().isPreview
-        {
-            // Start presenting the new View
+        if !ProcessInfo().isPreview {
             sheet = destination
             dataForDestinations[destination] = data
         }
-        
     }
+    
 
     public func data(for destination: String) -> Any {
-        return dataForDestinations[destination] ?? EmptyView() // Return data or an empty view
+        return dataForDestinations[destination] ?? EmptyView()
     }
     
-    public func pop(to view: String? = nil)
-    {
-        // Check if not Preview
-        if !ProcessInfo().isPreview
-        {
-            // Start process to Pop
-            if view != nil
-            {
-                if let index = path.lastIndex(of: view!)
-                {
-                    if (index + 1 < path.count)
-                    {
-                        path.removeSubrange((index+1)...(path.count - 1))
-                    }
-                    else
-                    {
-                        path.removeSubrange(index...(path.count - 1))
-                    }
-                    
+    
+    public func pop(to view: String? = nil) {
+        if !ProcessInfo().isPreview {
+            if let view = view, let index = path.lastIndex(of: view) {
+                if (index + 1 < path.count) {
+                    path.removeSubrange((index+1)...(path.count - 1))
+                } else {
+                    path.removeSubrange(index...(path.count - 1))
                 }
-                else
-                {
-                    path.removeLast()
-                }
-                
-            }
-            else
-            {
+            } else {
                 path.removeLast()
             }
-            
         }
-        
     }
     
     
-    public func popToRoot()
-    {
-        // Check if not Preview
-        if !ProcessInfo().isPreview
-        {
-            // Pop to root
+    public func popToRoot() {
+        if !ProcessInfo().isPreview {
             path.removeAll()
         }
-        
     }
     
     
-    
-    public func dismiss()
-    {
-        if !ProcessInfo().isPreview
-        {
-            if sheet != nil
-            {
-                self.sheet = nil
+    public func dismiss() {
+        if !ProcessInfo().isPreview {
+            if sheet != nil {
+                sheet = nil
             }
-            
         }
-        
     }
     
 }
-
-
 
 struct NavigationStackEx_Notif {
     static let DISMISS: String = "path.removeLast()"
 }
-
-
 
 struct CustomNavigationBackButtonModifier<CustomBackView: View>: ViewModifier {
     
@@ -243,12 +199,14 @@ struct CustomNavigationRightItemModifier<CustomRightView: View>: ViewModifier {
     }
 }
 
+
 extension ProcessInfo
 {
     var isPreview: Bool {
         return ProcessInfo.processInfo.environment["XCODE_RUNNING_FOR_PREVIEWS"] == "1"
     }
 }
+
 
 extension View {
     
@@ -269,7 +227,6 @@ extension View {
     }
     
 }
-
 
 
 extension String: Identifiable {
