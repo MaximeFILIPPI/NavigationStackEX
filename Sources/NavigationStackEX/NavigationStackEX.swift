@@ -9,11 +9,11 @@ import SwiftUI
 
 public struct NavigationStackEX<Content: View>: View {
     
-    @StateObject public var navigator: Navigator = Navigator()
+    @StateObject var navigator: Navigator = Navigator()
     
-    @Binding public var destinations: [String: AnyView]
+    @Binding var destinations: [String: AnyView]
 
-    public let content: () -> Content
+    let content: () -> Content
     
     public init(destinations: Binding<[String: AnyView]>, content: @escaping () -> Content) 
     {
