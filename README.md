@@ -267,16 +267,9 @@ How to pass data in the modern way:
 // Set data using a view instance
 navigator.push(to: ProfileView(name: "Max"))
 
-// Example of Profile View
-struct ProfileView: View {
-
-    @State var name: String = ""
-    
-    ...
-}
-
 ```
 
+---------------------------------------------
 
 How to pass data in the classical way: 
 
@@ -287,8 +280,20 @@ How to pass data in the classical way:
 let data: String = "Max" // <- Can be any type of data, primivite, objects, etc...
 navigator.push(to: "profile", with: data)
 
+```
 
-// Example for Profile View
+Get the data:
+
+```swift
+
+let data = navigator.data(for: "profile") as? String // <- Can be any type of data, primivite, objects, etc...
+
+```
+
+Profile class example when retrieving data:
+
+```swift
+
 struct ProfileView: View {
 
     @State var name: String = ""
@@ -306,10 +311,10 @@ struct ProfileView: View {
         
     }
     
-    
+
     func loadInfos()
     {
-        if let profileData = navigator.data(for: "profile") as? String
+        if let profileData = navigator.data(for: "profile") as? String // <- Get it here
         {
             name = profileData
         }
