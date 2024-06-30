@@ -10,6 +10,8 @@ import SwiftUI
 
 public struct NavigationStackEX<Content: View, V: View>: View {
     
+    private let TAG: String = "NavigationStackEX ::"
+    
     @StateObject var navigator: Navigator = Navigator()
     
     @Binding var destinations: [String: V]
@@ -42,6 +44,8 @@ public struct NavigationStackEX<Content: View, V: View>: View {
 @MainActor
 public class Navigator: ObservableObject {
     
+    private let TAG: String = "Navigator ::"
+    
     public var urlHandler: ((URL) -> OpenURLAction.Result)?
     
     @Published public var path: [String] = []
@@ -60,6 +64,10 @@ public class Navigator: ObservableObject {
             path.append(destination)
             dataForDestinations[destination] = data
         }
+        else
+        {
+            print(TAG, "push() -> cannot be used in Preview")
+        }
     }
     
     
@@ -69,6 +77,10 @@ public class Navigator: ObservableObject {
             dynamicDestinations[viewIdentifier] = view.any
             path.append(viewIdentifier)
         }
+        else
+        {
+            print(TAG, "push() -> cannot be used in Preview")
+        }
     }
     
     
@@ -76,6 +88,10 @@ public class Navigator: ObservableObject {
         if !ProcessInfo().isPreview {
             sheet = destination
             dataForDestinations[destination] = data
+        }
+        else
+        {
+            print(TAG, "present() -> cannot be used in Preview")
         }
     }
     
@@ -97,12 +113,20 @@ public class Navigator: ObservableObject {
                 path.removeLast()
             }
         }
+        else
+        {
+            print(TAG, "pop() -> cannot be used in Preview")
+        }
     }
     
     
     public func popToRoot() {
         if !ProcessInfo().isPreview {
             path.removeAll()
+        }
+        else
+        {
+            print(TAG, "popToRoot() -> cannot be used in Preview")
         }
     }
     
@@ -112,6 +136,10 @@ public class Navigator: ObservableObject {
             if sheet != nil {
                 sheet = nil
             }
+        }
+        else
+        {
+            print(TAG, "dismiss() -> cannot be used in Preview")
         }
     }
     
