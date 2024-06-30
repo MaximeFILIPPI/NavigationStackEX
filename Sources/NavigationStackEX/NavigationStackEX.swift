@@ -9,8 +9,6 @@ import SwiftUI
 
 public struct NavigationStackEX<Content: View>: View {
     
-    private let TAG: String = "NavigationStackEX ::"
-    
     @StateObject public var navigator: Navigator = Navigator()
     
     @Binding public var destinations: [String: AnyView]
@@ -50,8 +48,6 @@ public struct NavigationStackEX<Content: View>: View {
 @MainActor
 public class Navigator: ObservableObject {
     
-    private let TAG: String = "Navigator ::"
-    
     public var urlHandler: ((URL) -> OpenURLAction.Result)?
     
     @Published public var path: [String] = []
@@ -75,7 +71,7 @@ public class Navigator: ObservableObject {
             path.append(destination)
             dataForDestinations[destination] = data
         } else {
-            print(TAG, "push() -> cannot be used in Preview")
+            print("push() -> cannot be used in Preview")
         }
     }
     
@@ -85,7 +81,7 @@ public class Navigator: ObservableObject {
             dynamicDestinations[viewIdentifier] = view.any
             path.append(viewIdentifier)
         } else {
-            print(TAG, "push() -> cannot be used in Preview")
+            print("push() -> cannot be used in Preview")
         }
     }
     
@@ -94,7 +90,7 @@ public class Navigator: ObservableObject {
             sheet = destination
             dataForDestinations[destination] = data
         } else {
-            print(TAG, "present() -> cannot be used in Preview")
+            print("present() -> cannot be used in Preview")
         }
     }
     
@@ -104,7 +100,7 @@ public class Navigator: ObservableObject {
             dynamicSheets[viewIdentifier] = view.any
             sheet = viewIdentifier
         } else {
-            print(TAG, "present() -> cannot be used in Preview")
+            print("present() -> cannot be used in Preview")
         }
     }
     
@@ -113,7 +109,7 @@ public class Navigator: ObservableObject {
             cover = destination
             dataForDestinations[destination] = data
         } else {
-            print(TAG, "presentFullScreen() -> cannot be used in Preview")
+            print("presentFullScreen() -> cannot be used in Preview")
         }
     }
     
@@ -123,7 +119,7 @@ public class Navigator: ObservableObject {
             dynamicCovers[viewIdentifier] = view.any
             cover = viewIdentifier
         } else {
-            print(TAG, "presentFullScreen() -> cannot be used in Preview")
+            print("presentFullScreen() -> cannot be used in Preview")
         }
     }
 
@@ -143,7 +139,7 @@ public class Navigator: ObservableObject {
                 path.removeLast()
             }
         } else {
-            print(TAG, "pop() -> cannot be used in Preview")
+            print("pop() -> cannot be used in Preview")
         }
     }
     
@@ -151,7 +147,7 @@ public class Navigator: ObservableObject {
         if !ProcessInfo().isPreview {
             path.removeAll()
         } else {
-            print(TAG, "popToRoot() -> cannot be used in Preview")
+            print("popToRoot() -> cannot be used in Preview")
         }
     }
     
@@ -164,7 +160,7 @@ public class Navigator: ObservableObject {
                 cover = nil
             }
         } else {
-            print(TAG, "dismiss() -> cannot be used in Preview")
+            print("dismiss() -> cannot be used in Preview")
         }
     }
 }
@@ -177,7 +173,7 @@ public struct CustomNavigationBackButtonModifier<CustomBackView: View>: ViewModi
     
     @Environment(\.presentationMode) private var presentationMode: Binding<PresentationMode>
     
-    let backButtonView: CustomBackView
+    public let backButtonView: CustomBackView
     
     public func body(content: Content) -> some View {
         content
@@ -210,7 +206,7 @@ public struct CustomNavigationLeftItemModifier<CustomLeftView: View>: ViewModifi
     
     @Environment(\.presentationMode) private var presentationMode: Binding<PresentationMode>
     
-    let leftCustomView: CustomLeftView
+    public let leftCustomView: CustomLeftView
     
     public func body(content: Content) -> some View {
         content
