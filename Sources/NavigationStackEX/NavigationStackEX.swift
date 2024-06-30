@@ -58,7 +58,6 @@ public class Navigator: ObservableObject {
 
     public init() {}
     
-    
     public func push(to destination: String, with data: Any? = nil) {
         if !ProcessInfo().isPreview {
             path.append(destination)
@@ -69,7 +68,6 @@ public class Navigator: ObservableObject {
             print(TAG, "push() -> cannot be used in Preview")
         }
     }
-    
     
     public func push<V: View>(to view: V, identifier: String? = nil) {
         if !ProcessInfo().isPreview {
@@ -83,7 +81,6 @@ public class Navigator: ObservableObject {
         }
     }
     
-    
     public func present(_ destination: String, with data: Any? = nil) {
         if !ProcessInfo().isPreview {
             sheet = destination
@@ -94,12 +91,10 @@ public class Navigator: ObservableObject {
             print(TAG, "present() -> cannot be used in Preview")
         }
     }
-    
 
-    public func data(for destination: String) -> Any {
-        return dataForDestinations[destination] ?? EmptyView()
+    public func data(for destination: String) -> Any? {
+        return dataForDestinations[destination]
     }
-    
     
     public func pop(to view: String? = nil) {
         if !ProcessInfo().isPreview {
@@ -119,7 +114,6 @@ public class Navigator: ObservableObject {
         }
     }
     
-    
     public func popToRoot() {
         if !ProcessInfo().isPreview {
             path.removeAll()
@@ -129,7 +123,6 @@ public class Navigator: ObservableObject {
             print(TAG, "popToRoot() -> cannot be used in Preview")
         }
     }
-    
     
     public func dismiss() {
         if !ProcessInfo().isPreview {
@@ -142,7 +135,6 @@ public class Navigator: ObservableObject {
             print(TAG, "dismiss() -> cannot be used in Preview")
         }
     }
-    
 }
 
 struct NavigationStackEx_Notif {
@@ -227,14 +219,12 @@ struct CustomNavigationRightItemModifier<CustomRightView: View>: ViewModifier {
     }
 }
 
-
 extension ProcessInfo
 {
     var isPreview: Bool {
         return ProcessInfo.processInfo.environment["XCODE_RUNNING_FOR_PREVIEWS"] == "1"
     }
 }
-
 
 extension View {
     
@@ -255,6 +245,7 @@ extension View {
     }
     
 }
+
 
 
 extension String: Identifiable {
