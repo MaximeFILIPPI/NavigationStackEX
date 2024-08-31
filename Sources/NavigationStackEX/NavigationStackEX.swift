@@ -15,9 +15,9 @@ public struct NavigationStackEX<Content: View>: View {
 
     let content: () -> Content
     
-    public init(destinations: Binding<[String: AnyView]>, content: @escaping () -> Content) 
+    public init(destinations: Binding<[String: AnyView]>? = nil, content: @escaping () -> Content)
     {
-        self._destinations = destinations
+        self._destinations = destinations ?? .constant([:])
         self.content = content
     }
 
@@ -38,6 +38,7 @@ public struct NavigationStackEX<Content: View>: View {
                         dynamicView
                     }
                 }
+            #if os(iOS)
                 .fullScreenCover(item: $navigator.cover) { destination in
                     if let view = destinations[destination] {
                         view
@@ -45,6 +46,7 @@ public struct NavigationStackEX<Content: View>: View {
                         dynamicView
                     }
                 }
+            #endif
         }
         .environmentObject(navigator)
     }
@@ -184,6 +186,7 @@ public struct CustomNavigationBackButtonModifier<CustomBackView: View>: ViewModi
     public func body(content: Content) -> some View {
         content
             .navigationBarBackButtonHidden(true)
+        #if os(iOS)
             .toolbar {
                 
                 ToolbarItem(placement: .topBarLeading) {
@@ -201,6 +204,7 @@ public struct CustomNavigationBackButtonModifier<CustomBackView: View>: ViewModi
                 }
                 
             }
+        #endif
         
     }
     
@@ -217,6 +221,7 @@ public struct CustomNavigationLeftItemModifier<CustomLeftView: View>: ViewModifi
     public func body(content: Content) -> some View {
         content
             .navigationBarBackButtonHidden(true)
+        #if os(iOS)
             .toolbar {
                 
                 ToolbarItem(placement: .topBarTrailing) {
@@ -226,6 +231,7 @@ public struct CustomNavigationLeftItemModifier<CustomLeftView: View>: ViewModifi
                 }
                 
             }
+        #endif
     }
     
 }
@@ -240,6 +246,7 @@ public struct CustomNavigationRightItemModifier<CustomRightView: View>: ViewModi
     
     public func body(content: Content) -> some View {
         content
+        #if os(iOS)
             .toolbar {
                 
                 ToolbarItem(placement: .topBarTrailing) {
@@ -249,6 +256,7 @@ public struct CustomNavigationRightItemModifier<CustomRightView: View>: ViewModi
                 }
                 
             }
+        #endif
         
     }
 }
@@ -287,3 +295,4 @@ extension String: Identifiable {
         self
     }
 }
+
