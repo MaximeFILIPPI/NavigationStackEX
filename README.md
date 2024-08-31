@@ -79,9 +79,9 @@ struct YourProject: App {
     
         WindowGroup {
         
-            NavigationStackEX { // <- The NavigationEX
+            NavigationStackEX { // <- use THIS instead of NavigationStack
             
-                ContentView() // <- Your root view (first view)
+                ContentView()
                 
             }
             
@@ -101,6 +101,9 @@ Then use the `navigator` functions as `push`, `present`, `presentFullScreen`, `p
 
 
 ```swift
+import SwiftUI
+import NavigationStackEX // <- Import
+
 struct ContentView: View {
 
     @EnvironmentObject var navigator: Navigator  // <- Add this line to the view
@@ -122,7 +125,7 @@ struct ContentView: View {
     
     func goToNextScreen()
     {
-        navigator.push(to: ProfileView()) // <- use THIS to navigate (you can also use it inside your views directly)
+        navigator.push(to: ProfileView()) // <- use THIS to navigate
     }
     
 }
@@ -176,13 +179,13 @@ navigator.popToRoot()
 Back to a specific screen in the stack
 
 > **Note:**
-> You must use the parameter "identifier" when navigating to activate this functionnality
+> You must use the parameter **"identifier"** when navigating to activate this functionnality
 > (example: `navigator.push(to: ProfileView(), identifier: "profile"))`)
 
 ```swift
 
 // Back to a specified SwiftUI view
-navigator.pop(to: "profile") // <- will take you back to the profile view of your app, wherever it is in your navigation stack
+navigator.pop(to: "profile") // <- will take you back to the profile view in your navigation stack
 
 ```
 
@@ -238,7 +241,7 @@ navigator.dismiss()
 ## Passing Data 
 
 
-How to pass data (just like any SwiftUI views): 
+How to pass data? Just like any SwiftUI views: 
 
 ```swift
 
@@ -342,10 +345,10 @@ struct TempScreenView: View {
 ---------------------------------------------
 
 
-## TRADITIONAL NAV STYLE
+## (OPTIONAL) TRADITIONAL NAV STYLE 
 
 
-You can also use a more traditional way to navigate by declaring and pre-loading the screens (SwiftUI View that you need)
+For people that prefers to keep everything tidy in one class only, you can use a more traditional approach to navigate by declaring and pre-loading the screens (SwiftUI views) that you need before using them.
 
 ```swift
 import SwiftUI
