@@ -1,14 +1,16 @@
 
 
-<p align="center">
-  <img src="https://github.com/MaximeFILIPPI/NavigationStackEX/blob/main/Images/navigation_stack_banner.png" />
-</p>
+<!--<p align="center">-->
+<!--  <img src="https://github.com/MaximeFILIPPI/NavigationStackEX/blob/main/Images/navigation_stack_banner.png" />-->
+<!--</p>-->
 
 <p align="center">
     <img src="https://img.shields.io/badge/SwiftUI-5%2B-blue?style=flat&color=%2326c281%20&link=https%3A%2F%2Fdeveloper.apple.com%2Fxcode%2Fswiftui%2F" />
-    <img src="https://img.shields.io/badge/iOS-16%2B-blue?style=flat&color=%239f5afd&link=https%3A%2F%2Fdeveloper.apple.com%2Fios%2F" alt="Platforms" />
+    <img src="https://img.shields.io/badge/iOS-16%2B-blue?style=flat&color=%239f5afd&link=https%3A%2F%2Fdeveloper.apple.com%2Fios%2F" alt="Platform-iOS" />
+    <img src="https://img.shields.io/badge/macOS-14%2B-blue?style=flat&color=%23ff9470&link=https%3A%2F%2Fdeveloper.apple.com%2Fios%2F" alt="Platform-macOS" />
     <a href="https://github.com/MaximeFILIPPI/NavigationStackEX/blob/main/LICENSE"><img src="http://img.shields.io/badge/license-MIT-blue.svg?style=flat" alt="License: MIT" /></a>
 </p>
+
 
 # NavigationStackEX
 
@@ -16,29 +18,33 @@ Abstract encapsulation of the default NavigationStack with custom functionalitie
 
 Push, present, and pop your views elegantly, helping you reduce time, complexity, and maintain code clarity.
 
+And it's Super Lightweight!
+
 
 
 ## Features
 
 ✅ 100% SwiftUI
 
-✅ Super easy-to-use
-
 ✅ Powerful solution for your Navigation
 
-✅ Can predefine the loading of your views in the app, ahead of use, in a more conventional way
+✅ Super easy-to-use
 
-✅ Can dynamically push / present your Views in a SwiftUI style, more modern way
+✅ Lightweight
 
 ✅ Supports any kind of Views
 
+✅ Can dynamically push / present your Views in a SwiftUI
+
+✅ Can predefine the pre-loading of your views in the app, ahead of use, in a more conventional way if needed
 
 ⚠️ Known limitation: The display of modal views (for 'present' and 'presentFullScreen') are not stackable as of right now (will be in the future)
 
 
+
 ## Requirements
 
-- iOS 16.0+
+- iOS 16.0+, macOS 14.0+
 - SwiftUI 5.0+
 
 
@@ -60,7 +66,7 @@ Follow the prompts to complete the installation.
 
 ## Setup
 
-Here is an example of how to integrate and use NavigationStackEX in your SwiftUI views:
+Here is an example of how to integrate and use NavigationStackEX in your SwiftUI project:
 
 ```swift
 import SwiftUI
@@ -69,40 +75,23 @@ import NavigationStackEX // <- Import
 @main
 struct YourProject: App {
     
-    @State var segues: [String: AnyView] = [:] // <- Add this line to prepare destinations
-    
     var body: some Scene {
     
         WindowGroup {
         
-            NavigationStackEX(destinations: $segues) { // <- The NavigationEX
+            NavigationStackEX { // <- The NavigationEX
+            
                 ContentView() // <- Your root view (first view)
+                
             }
-            .onAppear {
-                self.setupNavigation()
-            }
+            
         }
-    }
-    
-    
-    
-    // OPTIONAL
-    // You can setup the destinations ahead of time 
-    // By predefining your views with associated tags
-    // It allows you to navigate in a more classical way by referencing tags instead of views instance
-    
-    func setupNavigation()
-    {
-        // Example for a profile view in your app
-        self.segues["profile"] = ProfileView().any // <- add .any modifier behind your view
         
-        // Add more segues as needed
     }
+    
 }
+
 ```
-
-
----------------------------------------------
 
 
 ## Basic Usage
@@ -110,13 +99,11 @@ struct YourProject: App {
 To navigate between your views, simply add `@EnvironmentObject var navigator: Navigator`
 Then use the `navigator` functions as `push`, `present`, `presentFullScreen`, `pop`, `popToRoot`, `dismiss` to trigger the navigation:
 
-```swift
-import SwiftUI
-import NavigationStackEX
 
+```swift
 struct ContentView: View {
 
-    @EnvironmentObject var navigator: Navigator  // <- Add this line
+    @EnvironmentObject var navigator: Navigator  // <- Add this line to the view
     
     var body: some View {
     
@@ -124,7 +111,7 @@ struct ContentView: View {
         
             Button("Go to Profile") {
             
-                navigator.push(to: ProfileView()) // <- Push your view directly (or you can use a tag like "profile" that was predefine in the setupNavigation() function)
+                self.goToNextScreen()
             
             }
             
@@ -132,39 +119,34 @@ struct ContentView: View {
         
     }
     
+    
+    func goToNextScreen()
+    {
+        navigator.push(to: ProfileView()) // <- use THIS to navigate (you can also use it inside your views directly)
+    }
+    
 }
 ```
+
+THAT'S IT!
+
 
 ---------------------------------------------
 
 
-## Detailed Usage
+## Detailed Navigation Usage
 
 
 **PUSH**
 
-Navigate to next screen (Modern style)
+Navigate to next screen
 
 ```swift
 
 // Navigate to a SwiftUI view instance
 navigator.push(to: ProfileView())
 
-
 ```
-
-
-
-Navigate to next screen (Classic style)
-
-```swift
-
-// Navigate to a destination from a tag
-navigator.push(to: "profile")
-
-
-```
-
 
 ---------------------------------------------
 
@@ -177,7 +159,6 @@ Back to previous screen
 // Back to the previous SwiftUI view
 navigator.pop()
 
-
 ```
 
 
@@ -189,22 +170,19 @@ Back to the root of your navigation
 // Back to the very first SwiftUI view
 navigator.popToRoot()
 
-
 ```
-
 
 
 Back to a specific screen in the stack
 
 > **Note:**
-> You must use the classical way OR add the "identifier" parameter behind your view instance when using `push`
+> You must use the parameter "identifier" when navigating to activate this functionnality
 > (example: `navigator.push(to: ProfileView(), identifier: "profile"))`)
 
 ```swift
 
 // Back to a specified SwiftUI view
 navigator.pop(to: "profile") // <- will take you back to the profile view of your app, wherever it is in your navigation stack
-
 
 ```
 
@@ -217,25 +195,10 @@ navigator.pop(to: "profile") // <- will take you back to the profile view of you
 > **Note:**
 > Be careful the present modal way of displaying views is not stackable at the moment.
 
-
-Modal opening screen (Modern style)
-
 ```swift
 
 // Navigate to a SwiftUI view instance
 navigator.present(ProfileView())
-
-
-```
-
-
-Modal opening screen (Classic style)
-
-```swift
-
-// Navigate to a destination 
-navigator.present("profile")
-
 
 ```
 
@@ -244,24 +207,12 @@ navigator.present("profile")
 
 **PRESENT FULL SCREEN**
 
-Cover opening full screen  (Modern style)
+Cover opening full screen
 
 ```swift
 
 // Navigate to a SwiftUI view instance
 navigator.presentFullScreen(ProfileView())
-
-
-```
-
-
-Cover opening screen (Classic style)
-
-```swift
-
-// Navigate to a destination 
-navigator.presentFullScreen("profile")
-
 
 ```
 
@@ -278,7 +229,6 @@ Close a modal that has been `present` or `presentFullScreen`:
 // Navigate to a destination 
 navigator.dismiss()
 
-
 ```
 
 
@@ -288,7 +238,7 @@ navigator.dismiss()
 ## Passing Data 
 
 
-How to pass data in the modern way: 
+How to pass data (just like any SwiftUI views): 
 
 ```swift
 
@@ -296,64 +246,6 @@ How to pass data in the modern way:
 navigator.push(to: ProfileView(name: "Max"))
 
 ```
-
----------------------------------------------
-
-How to pass data in the classical way: 
-
-
-```swift
-
-// Set data using a destination (tag reference)
-let data: String = "Max" // <- Can be any type of data, primivite, objects, etc...
-navigator.push(to: "profile", with: data)
-
-```
-
----------------------------------------------
-
-Get the data:
-
-
-```swift
-
-navigator.data(for: "profile") as? String // <- Can be any type of data, primivite, objects, etc...
-
-```
-
-Profile class example when retrieving data:
-
-```swift
-
-struct ProfileView: View {
-
-    @State var name: String = ""
-    
-    var body: some View {
-    
-        ZStack {
-        
-            Text(name) 
-            
-        }
-        .onAppear {
-            loadInfos()
-        }
-        
-    }
-    
-
-    func loadInfos()
-    {
-        if let profileData = navigator.data(for: "profile") as? String // <- Get it here
-        {
-            name = profileData
-        }
-    }
-}
-
-```
-
 
 ---------------------------------------------
 
@@ -445,6 +337,170 @@ struct TempScreenView: View {
     }
 }
 ```
+
+
+---------------------------------------------
+
+
+## TRADITIONAL NAV STYLE
+
+
+You can also use a more traditional way to navigate by declaring and pre-loading the screens (SwiftUI View that you need)
+
+```swift
+import SwiftUI
+import NavigationStackEX // <- Import
+    
+@main
+struct YourProject: App {
+    
+    @State var segues: [String: AnyView] = [:] // <- Add this line to prepare destinations
+    
+    var body: some Scene {
+    
+        WindowGroup {
+        
+            NavigationStackEX(destinations: $segues) { // <- The NavigationEX
+                ContentView() // <- Your root view (first view)
+            }
+            .onAppear {
+                self.setupNavigation()
+            }
+        }
+    }
+    
+    
+    
+    // You can setup the destinations ahead of time 
+    // By predefining your views with associated tags
+    // It allows you to navigate in a more classical way by referencing tags instead of views instance
+    
+    func setupNavigation()
+    {
+        // Example for a profile view in your app
+        self.segues["profile"] = ProfileView().any // <- add .any modifier behind your view
+        
+        // Add more segues as needed
+    }
+}
+```
+
+Then use the functions like this:
+
+
+**PUSH**
+
+```swift
+
+// Navigate to a destination from a tag
+navigator.push(to: "profile")
+
+```
+
+**POP**
+
+```swift
+
+// Back to the previous SwiftUI view
+navigator.pop()
+
+// Back to the very first SwiftUI view
+navigator.popToRoot()
+
+// Back to a specified SwiftUI view
+navigator.pop(to: "profile") // <- will take you back to the profile view of your app, wherever it is in your navigation stack
+
+```
+
+**PRESENT**
+
+```swift
+
+// Navigate to a destination 
+navigator.present("profile")
+
+```
+
+**PRESENT FULL SCREEN**
+
+```swift
+
+// Navigate to a destination 
+navigator.presentFullScreen("profile")
+
+```
+
+
+**DISMISS**
+
+Close a modal that has been `present` or `presentFullScreen`:
+
+```swift
+
+// Navigate to a destination 
+navigator.dismiss()
+
+```
+
+
+**PASSING / RETRIEVING DATA**
+
+
+How to pass data: 
+
+
+```swift
+
+// Set data using a destination (tag reference)
+let data: String = "Max" // <- Can be any type of data, primivite, objects, etc...
+navigator.push(to: "profile", with: data)
+
+```
+
+
+Get the data:
+
+
+```swift
+
+navigator.data(for: "profile") as? String // <- Can be any type of data, primivite, objects, etc...
+
+```
+
+
+Profile class example when retrieving data:
+
+```swift
+
+struct ProfileView: View {
+
+    @State var name: String = ""
+    
+    var body: some View {
+    
+        ZStack {
+        
+            Text(name) 
+            
+        }
+        .onAppear {
+            loadInfos()
+        }
+        
+    }
+    
+
+    func loadInfos()
+    {
+        if let profileData = navigator.data(for: "profile") as? String // <- Get it here
+        {
+            name = profileData
+        }
+    }
+}
+
+```
+
 
 
 ---------------------------------------------
