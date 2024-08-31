@@ -9,11 +9,11 @@ import SwiftUI
 
 public struct NavigationStackEX<Content: View>: View {
     
-    @StateObject var navigator: Navigator = Navigator()
+    @StateObject private var navigator: Navigator = Navigator()
     
-    @Binding var destinations: [String: AnyView]
+    @Binding private var destinations: [String: AnyView]
 
-    let content: () -> Content
+    private let content: () -> Content
     
     public init(destinations: Binding<[String: AnyView]>? = nil, content: @escaping () -> Content)
     {
@@ -56,7 +56,7 @@ public struct NavigationStackEX<Content: View>: View {
 @MainActor
 public class Navigator: ObservableObject {
     
-    public var urlHandler: ((URL) -> OpenURLAction.Result)?
+//    private var urlHandler: ((URL) -> OpenURLAction.Result)?
     
     @Published public var path: [String] = []
     
@@ -64,7 +64,7 @@ public class Navigator: ObservableObject {
     
     @Published public var cover: String?
     
-    @Published public var dataForDestinations: [String: Any] = [:] // Store data for destinations
+    @Published private var dataForDestinations: [String: Any] = [:] // Store data for destinations
 
     @Published public var dynamicDestinations: [String: AnyView] = [:] // Store dynamically created views
     
