@@ -1,8 +1,8 @@
 
 
-<!--<p align="center">-->
-<!--  <img src="https://github.com/MaximeFILIPPI/NavigationStackEX/blob/main/Images/navigation_stack_banner.png" />-->
-<!--</p>-->
+<p align="center">
+  <img src="https://github.com/MaximeFILIPPI/NavigationStackEX/blob/main/Images/navigation_ex_banner.png" />
+</p>
 
 <p align="center">
     <img src="https://img.shields.io/badge/SwiftUI-5%2B-blue?style=flat&color=%2326c281%20&link=https%3A%2F%2Fdeveloper.apple.com%2Fxcode%2Fswiftui%2F" />
@@ -20,6 +20,8 @@ Push, present, and pop your views elegantly, helping you reduce time, complexity
 
 And it's Super Lightweight!
 
+![screenshot](https://github.com/MaximeFILIPPI/NavigationStackEX/blob/main/Images/NavigationStackEX-optimized.png)
+![screenshot](https://github.com/MaximeFILIPPI/NavigationStackEX/blob/main/Images/NavigationStackEX-PUSH-Pink-optimized.png)
 
 
 ## Features
